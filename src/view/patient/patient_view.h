@@ -3,6 +3,7 @@
 
 #include "patient.h"
 
+void createPatientFromView(PatientListHeader* list);
 void patientMenu(PatientListHeader* list);
 
 #endif

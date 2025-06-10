@@ -9,8 +9,8 @@ void initPatientList(PatientListHeader* list) {
     list->lastId = 0;
 }
 
-void addPatient(PatientListHeader* list, const char* name, const char* diagnosis) {
-    Patient* newPatient = createPatient(++list->lastId, name, diagnosis);
+void addPatient(PatientListHeader* list, const char* name, const char* cpf) {
+    Patient* newPatient = createPatient(++list->lastId, name, cpf);
 
     if (list->top == NULL) {
         list->top = newPatient;
@@ -22,6 +22,28 @@ void addPatient(PatientListHeader* list, const char* name, const char* diagnosis
     }
 }
 
+Patient* getPatientById(PatientListHeader* list, long id) {
+    Patient* current = list->top;
+    while (current != NULL) {
+        if (current->id == id)
+            return current;
+        
+        current = current->next;
+    }
+    return NULL;
+}
+
+Patient* getPatientByCpf(PatientListHeader* list, const char* cpf) {
+    Patient* current = list->top;
+    while (current != NULL) {
+        if (strcmp(current->cpf, cpf) == 0)
+            return current;
+        
+        current = current->next;
+    }
+    return NULL;
+}
+
 void printAllPatients(PatientListHeader* list) {
     Patient* current = list->top;
     while (current != NULL) {
@@ -31,7 +53,7 @@ void printAllPatients(PatientListHeader* list) {
     }
 }
 
-int updatePatientById(PatientListHeader* list, long id, const char* newName, const char* newDiagnosis) {
+int updatePatientById(PatientListHeader* list, long id, const char* newName, const char* newCpf) {
   Patient* current = list->top;
     while (current != NULL) {
         if (current->id == id) {
@@ -39,9 +61,9 @@ int updatePatientById(PatientListHeader* list, long id, const char* newName, con
                 strncpy(current->name, newName, sizeof(current->name));
                 current->name[sizeof(current->name)-1] = '\0';
             }
-            if (newDiagnosis != NULL) {
-                strncpy(current->diagnosis, newDiagnosis, sizeof(current->diagnosis));
-                current->diagnosis[sizeof(current->diagnosis)-1] = '\0';
+            if (newCpf != NULL) {
+                strncpy(current->cpf, newCpf, sizeof(current->cpf));
+                current->cpf[sizeof(current->cpf)-1] = '\0';
             }
             return 1; // Sucesso
         }

@@ -3,12 +3,12 @@
 #include <string.h>
 #include "patient.h"
 
-Patient* createPatient(long id, const char* name, const char* diagnosis) {
+Patient* createPatient(long id, const char* name, const char* cpf) {
     Patient* p = (Patient*)malloc(sizeof(Patient));
 
     p->id = id;
     strcpy(p->name, name);
-    strcpy(p->diagnosis, diagnosis);
+    strcpy(p->cpf, cpf);
 
     p->prev = NULL;
     p->next = NULL;
@@ -17,7 +17,7 @@ Patient* createPatient(long id, const char* name, const char* diagnosis) {
 }
 
 void printPatient(Patient* p) {
-    printf("Nome: %s\nDiagnóstico: %s\n", p->name, p->diagnosis);
+    printf("Nome: %s\nCpf: %s\n", p->name, p->cpf);
 }
 
 void freePatient(Patient* p) {

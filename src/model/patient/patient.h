@@ -4,7 +4,7 @@
 typedef struct Patient {
     long id;
     char name[100];
-    char diagnosis[200];
+    char cpf[11];
 
     struct Patient* prev;
     struct Patient* next;
@@ -16,7 +16,7 @@ typedef struct PatientListHeader {
     long lastId;
 } PatientListHeader;
 
-Patient* createPatient(long id, const char* name, const char* diagnosis);
+Patient* createPatient(long id, const char* name, const char* cpf);
 void printPatient(Patient* p);
 void freePatient(Patient* p);
 

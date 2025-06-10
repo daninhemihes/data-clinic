@@ -4,10 +4,27 @@
 #include "patient_view.h"
 #include "patient_controller.h"
 
+void createPatientFromView(PatientListHeader* list){
+    char name[100];
+    char cpf[11];
+    long id;
+    getchar();
+    printf("Nome: ");
+    fgets(name, sizeof(name), stdin);
+    name[strcspn(name, "\n")] = 0;
+
+    printf("Cpf: ");
+    fgets(cpf, sizeof(cpf), stdin);
+    cpf[strcspn(cpf, "\n")] = 0;
+
+    addPatient(list, name, cpf);
+    printf("Paciente adicionado.\n");
+}
+
 void patientMenu(PatientListHeader* list) {
     int choice;
     char name[100];
-    char diagnosis[200];
+    char cpf[11];
     long id;
 
     while (1) {
@@ -23,16 +40,7 @@ void patientMenu(PatientListHeader* list) {
 
         switch (choice) {
             case 1:
-                printf("Nome: ");
-                fgets(name, sizeof(name), stdin);
-                name[strcspn(name, "\n")] = 0;
-
-                printf("Diagnóstico: ");
-                fgets(diagnosis, sizeof(diagnosis), stdin);
-                diagnosis[strcspn(diagnosis, "\n")] = 0;
-
-                addPatient(list, name, diagnosis);
-                printf("Paciente adicionado.\n");
+                createPatientFromView(list);
                 break;
 
             case 2:
@@ -48,13 +56,13 @@ void patientMenu(PatientListHeader* list) {
                 fgets(name, sizeof(name), stdin);
                 name[strcspn(name, "\n")] = 0;
 
-                printf("Novo diagnóstico (deixe vazio para manter): ");
-                fgets(diagnosis, sizeof(diagnosis), stdin);
-                diagnosis[strcspn(diagnosis, "\n")] = 0;
+                printf("Novo Cpf (deixe vazio para manter): ");
+                fgets(cpf, sizeof(cpf), stdin);
+                cpf[strcspn(cpf, "\n")] = 0;
 
                 if (updatePatientById(list, id,
                         strlen(name) > 0 ? name : NULL,
-                        strlen(diagnosis) > 0 ? diagnosis : NULL)) {
+                        strlen(cpf) > 0 ? cpf : NULL)) {
                     printf("Paciente atualizado.\n");
                 } else {
                     printf("Paciente não encontrado.\n");
