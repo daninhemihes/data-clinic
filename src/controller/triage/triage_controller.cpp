@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "triage_controller.h"
+#include "../model/triage_queue/triage_queue.h"
+#include "../view/triage_queue_view.cpp"
 
 void initTriageList(TriageListHeader* list) {
     list->top = NULL;
@@ -31,7 +33,6 @@ Triage* addTriage(
     float bodyTemperature,
     int oxygenSaturation,
     int painScale,
-    PriorityLevel priority,
     const char* description
 ) {
     Triage* t = createTriage(
@@ -45,8 +46,7 @@ Triage* addTriage(
         description
     );
     t->id = ++list->lastId;
-    t->priority = priority;
-
+    t->priority = calculatePriority(t); 
     TriageNode* node = (TriageNode*)malloc(sizeof(TriageNode));
     node->data = t;
     node->next = NULL;
@@ -137,4 +137,21 @@ void printAllTriages(TriageListHeader* list) {
         printTriage(current->data);
         current = current->next;
     }
+}
+
+void listOrderedTriages(TriageListHeader* list) {
+    TriageQueue queue;
+
+    TriageNode* current = list->top;  // Corrigir para list->top
+
+    while (current != nullptr) {
+        queue.enqueue(current);
+        current = current->next;
+    }
+
+    // Mostrar na linha de comando
+    queue.print();
+
+    // Mostrar na janela GUI
+    showTriageQueueGUI(&queue);
 }

@@ -4,10 +4,11 @@
 #include "patient.h"
 
 typedef enum {
-    EMERGENCY = 1,
-    URGENT = 2,
-    LESS_URGENT = 3,
-    NON_URGENT = 4
+    RED,
+    ORANGE,
+    YELLOW,
+    GREEN,
+    BLUE
 } PriorityLevel;
 
 typedef struct {

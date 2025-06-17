@@ -59,32 +59,55 @@ void freeTriage(Triage* t) {
 }
 
 PriorityLevel calculatePriority(Triage* t) {
-    int score = 0;
+    if (t == NULL) return BLUE; // Retorna prioridade mais baixa se triagem for inválida
 
-    if (t->bloodPressureSystolic < 90 || t->bloodPressureSystolic > 180) score += 3;
-    else if (t->bloodPressureSystolic < 100 || t->bloodPressureSystolic > 160) score += 2;
-    else if (t->bloodPressureSystolic < 110 || t->bloodPressureSystolic > 140) score += 1;
+    // 1. Critérios para VERMELHO (Emergência - atendimento imediato)
+    if (t->oxygenSaturation < 85 || 
+        t->heartRate < 40 || 
+        t->heartRate > 140 ||
+        t->bloodPressureSystolic < 80 ||
+        t->bloodPressureDiastolic < 50 ||
+        t->bodyTemperature > 40.0 ||
+        t->bodyTemperature < 34.0) {
+        return RED;
+    }
 
-    if (t->bloodPressureDiastolic < 60 || t->bloodPressureDiastolic > 110) score += 2;
-    else if (t->bloodPressureDiastolic < 70 || t->bloodPressureDiastolic > 100) score += 1;
+    // 2. Critérios para LARANJA (Muito urgente - atendimento em 10 min)
+    if (t->oxygenSaturation < 90 ||
+        t->heartRate < 50 || 
+        t->heartRate > 120 ||
+        t->bloodPressureSystolic > 200 ||
+        t->bloodPressureDiastolic > 120 ||
+        t->bodyTemperature > 39.0 ||
+        t->bodyTemperature < 35.0 ||
+        t->painScale >= 8) {
+        return ORANGE;
+    }
 
-    if (t->heartRate < 50 || t->heartRate > 130) score += 3;
-    else if (t->heartRate < 60 || t->heartRate > 110) score += 2;
-    else if (t->heartRate < 70 || t->heartRate > 100) score += 1;
+    // 3. Critérios para AMARELO (Urgente - atendimento em 60 min)
+    if (t->oxygenSaturation < 95 ||
+        t->heartRate < 60 || 
+        t->heartRate > 100 ||
+        t->bloodPressureSystolic > 180 ||
+        t->bloodPressureDiastolic > 110 ||
+        t->bodyTemperature > 38.0 ||
+        t->bodyTemperature < 36.0 ||
+        (t->painScale >= 5 && t->painScale <= 7)) {
+        return YELLOW;
+    }
 
-    if (t->bodyTemperature < 35.0 || t->bodyTemperature > 39.0) score += 3;
-    else if (t->bodyTemperature < 36.0 || t->bodyTemperature > 38.0) score += 2;
-    else if (t->bodyTemperature < 36.5 || t->bodyTemperature > 37.5) score += 1;
+    // 4. Critérios para VERDE (Pouco urgente - atendimento em 120 min)
+    if (t->oxygenSaturation < 98 ||
+        t->heartRate < 70 || 
+        t->heartRate > 90 ||
+        t->bloodPressureSystolic > 140 ||
+        t->bloodPressureDiastolic > 90 ||
+        t->bodyTemperature > 37.5 ||
+        t->bodyTemperature < 36.5 ||
+        (t->painScale >= 3 && t->painScale <= 4)) {
+        return GREEN;
+    }
 
-    if (t->oxygenSaturation < 85) score += 4;
-    else if (t->oxygenSaturation < 90) score += 3;
-    else if (t->oxygenSaturation < 95) score += 2;
-
-    if (t->painScale >= 8) score += 2;
-    else if (t->painScale >= 5) score += 1;
-
-    if (score >= 10) return EMERGENCY;
-    if (score >= 7) return URGENT;
-    if (score >= 4) return LESS_URGENT;
-    return NON_URGENT;
+    // 5. AZUL (Não urgente - atendimento em 240 min) - todos os outros casos
+    return BLUE;
 }
