@@ -52,7 +52,8 @@ void printPatientQueue(PatientQueue* queue) {
     PatientQueueNode* current = queue->front;
     while (current) {
         const char* name = current->triage->patient ? current->triage->patient->name : "(desconhecido)";
-        printf("Paciente: %s | Prioridade: %d\n", name, current->triage->priority);
+        const char* priorityName = getPriorityName(current->triage->priority);
+        printf("Paciente: %s | Prioridade: %s\n", name, priorityName);
         current = current->next;
     }
 }

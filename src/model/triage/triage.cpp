@@ -111,3 +111,14 @@ PriorityLevel calculatePriority(Triage* t) {
     // 5. AZUL (Não urgente - atendimento em 240 min) - todos os outros casos
     return BLUE;
 }
+
+const char* getPriorityName(PriorityLevel priority) {
+    switch (priority) {
+        case RED: return "Vermelho";
+        case ORANGE: return "Laranja";
+        case YELLOW: return "Amarelo";
+        case GREEN: return "Verde";
+        case BLUE: return "Azul";
+        default: return "Desconhecida";
+    }
+}

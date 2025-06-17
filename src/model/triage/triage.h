@@ -4,11 +4,11 @@
 #include "patient.h"
 
 typedef enum {
-    RED = 1,
-    ORANGE = 2,
-    YELLOW = 3,
-    GREEN = 4,
-    BLUE = 5
+    RED = 0,
+    ORANGE = 1,
+    YELLOW = 2,
+    GREEN = 3,
+    BLUE = 4
 } PriorityLevel;
 
 typedef struct {
@@ -52,5 +52,6 @@ Triage* createTriage(
 void printTriage(Triage* t);
 void freeTriage(Triage* t);
 PriorityLevel calculatePriority(Triage* t);
+const char* getPriorityName(PriorityLevel priority);
 
 #endif

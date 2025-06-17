@@ -26,8 +26,8 @@ void patientQueueMenu(PatientQueue* queue) {
                 Triage* next = chamarProximoPaciente(queue);
                 if (next) {
                     const char* name = next->patient ? next->patient->name : "(desconhecido)";
-                    printf("Chamando paciente: %s (Prioridade %d)\n",
-                           name, next->priority);
+                    const char* priorityName = getPriorityName(next->priority);
+                    printf("Chamando paciente: %s (Prioridade %s)\n", name, priorityName);
                 } else {
                     printf("Fila vazia.\n");
                 }
