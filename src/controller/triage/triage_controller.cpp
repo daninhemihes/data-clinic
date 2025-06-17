@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "triage_controller.h"
-#include "triage_queue.h"
-#include "triage_queue_view.h"
 #include "patient_queue.h"
 
 void initTriageList(TriageListHeader* list) {
@@ -147,23 +145,6 @@ void printAllTriages(TriageListHeader* list) {
     }
 }
 
-void listOrderedTriages(TriageListHeader* list) {
-    return;
-    // TriageQueue queue;
-    // TriageNode* current = list->top; 
-
-    // while (current != nullptr) {
-    //     queue.enqueue(current);
-    //     current = current->next;
-    // }
-
-    // // Mostrar na linha de comando
-    // queue.print();
-
-    // // Mostrar na janela GUI
-    // showTriageQueueGUI(&queue);
-}
-
 void saveTriagesToFile(TriageListHeader* list, const char* filename) {
     FILE* file = fopen(filename, "wb");
     if (!file) {
@@ -192,7 +173,7 @@ void loadTriagesFromFile(TriageListHeader* list, const char* filename) {
     while (fread(&temp, sizeof(Triage), 1, file)) {
         Triage* t = (Triage*)malloc(sizeof(Triage));
         *t = temp;
-        t->patient = NULL;  // deve ser resolvido posteriormente, se necessário
+        t->patient = NULL;
 
         TriageNode* node = (TriageNode*)malloc(sizeof(TriageNode));
         node->data = t;

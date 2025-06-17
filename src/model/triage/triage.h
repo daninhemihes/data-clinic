@@ -38,7 +38,6 @@ typedef struct {
     long lastId;
 } TriageListHeader;
 
-// Funções utilitárias
 Triage* createTriage(
     long patientId,
     int bloodPressureSystolic,

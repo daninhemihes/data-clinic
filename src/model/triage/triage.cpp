@@ -59,7 +59,7 @@ void freeTriage(Triage* t) {
 }
 
 PriorityLevel calculatePriority(Triage* t) {
-    if (t == NULL) return BLUE; // Retorna prioridade mais baixa se triagem for inválida
+    if (t == NULL) return BLUE;
 
     // 1. Critérios para VERMELHO (Emergência - atendimento imediato)
     if (t->oxygenSaturation < 85 || 

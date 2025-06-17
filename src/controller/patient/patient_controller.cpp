@@ -86,11 +86,11 @@ int removePatientById(PatientListHeader* list, long id) {
 
             freePatient(current);
             savePatientsToFile(list, "patients.dat");
-            return 1; // Sucesso
+            return 1;
         }
         current = current->next;
     }
-    return 0; // Não encontrado
+    return 0;
 }
 
 void freePatientList(PatientListHeader* list) {
