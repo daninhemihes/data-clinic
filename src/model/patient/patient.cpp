@@ -17,7 +17,7 @@ Patient* createPatient(long id, const char* name, const char* cpf) {
 }
 
 void printPatient(Patient* p) {
-    printf("Nome: %s\nCpf: %s\n", p->name, p->cpf);
+    printf("Id: %ld\nNome: %s\nCpf: %s\n", p->id, p->name, p->cpf);
 }
 
 void freePatient(Patient* p) {

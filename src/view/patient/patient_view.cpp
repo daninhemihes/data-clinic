@@ -7,8 +7,7 @@
 void createPatientFromView(PatientListHeader* list){
     char name[100];
     char cpf[11];
-    long id;
-    getchar();
+
     printf("Nome: ");
     fgets(name, sizeof(name), stdin);
     name[strcspn(name, "\n")] = 0;
