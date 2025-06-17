@@ -5,6 +5,9 @@
 #include "triage_controller.h"
 #include "patient_view.h"
 #include "triage_view.h"
+#include "patient_queue.h"
+#include "patient_queue_controller.h"
+#include "patient_queue_view.h"
 
 void showLogo() {
     printf("\n");
@@ -30,12 +33,14 @@ int main() {
 
     PatientListHeader patientList;
     TriageListHeader triageList;
+    PatientQueue queue;
 
     initPatientList(&patientList);
     loadPatientsFromFile(&patientList, "patients.dat");
     initTriageList(&triageList);
     loadTriagesFromFile(&triageList, "triages.dat");
     resolveTriagePatients(&triageList, &patientList);
+    initPatientQueue(&queue);
 
     int choice;
 
@@ -43,6 +48,7 @@ int main() {
         printf("\n===== Selecione uma opção =====\n");
         printf("1. Gerenciar pacientes\n");
         printf("2. Gerenciar triagens\n");
+        printf("3. Gerenciar fila de atendimento\n");
         printf("0. Sair\n");
         printf("Escolha: ");
         scanf("%d", &choice);
@@ -53,7 +59,10 @@ int main() {
                 patientMenu(&patientList);
                 break;
             case 2:
-                triageMenu(&triageList, &patientList);
+                triageMenu(&triageList, &patientList, &queue);
+                break;
+            case 3:
+                patientQueueMenu(&queue);
                 break;
             case 0:
                 freePatientList(&patientList);

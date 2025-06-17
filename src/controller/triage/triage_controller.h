@@ -2,12 +2,14 @@
 #define TRIAGE_CONTROLLER_H
 
 #include "triage.h"
+#include "patient_queue.h"
 
 void initTriageList(TriageListHeader* list);
 void freeTriageList(TriageListHeader* list);
 
 Triage* addTriage(
     TriageListHeader* list,
+    PatientQueue* queue,
     long patientId,
     int bloodPressureSystolic,
     int bloodPressureDiastolic,

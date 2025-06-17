@@ -3,11 +3,14 @@ CXX = g++
 CXXFLAGS = -Wall -std=c++17 \
            -I./src/model \
            -I./src/model/patient \
+           -I./src/model/patient_queue \
            -I./src/model/triage \
            -I./src/model/triage_queue \
            -I./src/controller/patient \
+           -I./src/controller/patient_queue \
            -I./src/controller/triage \
            -I./src/view/patient \
+           -I./src/view/patient_queue \
            -I./src/view/triage \
            -I./src/view/triage_queue
 
@@ -18,11 +21,14 @@ BUILD_DIR = build
 # Fontes
 SRCS = $(wildcard $(SRC_DIR)/main.cpp) \
        $(wildcard $(SRC_DIR)/model/patient/*.cpp) \
+       $(wildcard $(SRC_DIR)/model/patient_queue/*.cpp) \
        $(wildcard $(SRC_DIR)/model/triage/*.cpp) \
        $(wildcard $(SRC_DIR)/model/triage_queue/*.cpp) \
        $(wildcard $(SRC_DIR)/controller/patient/*.cpp) \
+       $(wildcard $(SRC_DIR)/controller/patient_queue/*.cpp) \
        $(wildcard $(SRC_DIR)/controller/triage/*.cpp) \
        $(wildcard $(SRC_DIR)/view/patient/*.cpp) \
+       $(wildcard $(SRC_DIR)/view/patient_queue/*.cpp) \
        $(wildcard $(SRC_DIR)/view/triage/*.cpp) \
        $(wildcard $(SRC_DIR)/view/triage_queue/*.cpp)
 

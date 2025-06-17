@@ -1,110 +1,58 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "patient_queue.h"
+#include <stdlib.h>
+#include <stdio.h>
 
-void initQueue(PatientQueue* queue) {
+void initPatientQueue(PatientQueue* queue) {
     queue->front = NULL;
     queue->rear = NULL;
-    queue->size = 0;
 }
 
-void enqueue(PatientQueue* queue, Triage* triage) {
-    QueueNode* node = (QueueNode*)malloc(sizeof(QueueNode));
-    node->triage = triage;
-    node->next = NULL;
+void enqueuePatient(PatientQueue* queue, Triage* triage) {
+    PatientQueueNode* newNode = (PatientQueueNode*)malloc(sizeof(PatientQueueNode));
+    newNode->triage = triage;
+    newNode->next = NULL;
 
-    if (queue->rear != NULL) {
-        queue->rear->next = node;
-    } else {
-        queue->front = node;
+    if (!queue->front || triage->priority < queue->front->triage->priority) {
+        newNode->next = queue->front;
+        queue->front = newNode;
+        if (!queue->rear) queue->rear = newNode;
+        return;
     }
 
-    queue->rear = node;
-    queue->size++;
+    PatientQueueNode* current = queue->front;
+    while (current->next && current->next->triage->priority <= triage->priority) {
+        current = current->next;
+    }
 
-    sortQueueByPriority(queue);
+    newNode->next = current->next;
+    current->next = newNode;
+    if (!newNode->next) queue->rear = newNode;
 }
 
-Triage* dequeue(PatientQueue* queue) {
-    if (queue->front == NULL) return NULL;
+Triage* dequeueNextPatient(PatientQueue* queue) {
+    if (!queue->front) return NULL;
 
-    QueueNode* temp = queue->front;
+    PatientQueueNode* temp = queue->front;
     Triage* triage = temp->triage;
-
     queue->front = temp->next;
-    if (queue->front == NULL) {
-        queue->rear = NULL;
-    }
-
+    if (!queue->front) queue->rear = NULL;
     free(temp);
-    queue->size--;
-
     return triage;
 }
 
-Triage* peek(PatientQueue* queue) {
-    if (queue->front == NULL) return NULL;
-    return queue->front->triage;
-}
-
-void sortQueueByPriority(PatientQueue* queue) {
-    if (queue->size < 2) return;
-
-    int swapped;
-    do {
-        swapped = 0;
-        QueueNode* current = queue->front;
-        QueueNode* prev = NULL;
-
-        while (current != NULL && current->next != NULL) {
-            Triage* a = current->triage;
-            Triage* b = current->next->triage;
-
-            if (a->priority > b->priority) {
-                if (prev != NULL) {
-                    prev->next = current->next;
-                } else {
-                    queue->front = current->next;
-                }
-
-                current->next = current->next->next;
-                prev->next->next = current;
-
-                swapped = 1;
-
-                prev = prev->next;
-            } else {
-                prev = current;
-                current = current->next;
-            }
-        }
-    } while (swapped);
-
-    QueueNode* temp = queue->front;
-    while (temp != NULL && temp->next != NULL) {
-        temp = temp->next;
-    }
-    queue->rear = temp;
-}
-
-void printQueue(PatientQueue* queue) {
-    QueueNode* current = queue->front;
-    printf("\n--- FILA DA UTI ---\n");
-    while (current != NULL) {
-        printTriage(current->triage);
-        current = current->next;
-    }
-    printf("-------------------\n");
-}
-
-void freeQueue(PatientQueue* queue) {
-    QueueNode* current = queue->front;
-    while (current != NULL) {
-        QueueNode* temp = current;
-        current = current->next;
+void freePatientQueue(PatientQueue* queue) {
+    while (queue->front) {
+        PatientQueueNode* temp = queue->front;
+        queue->front = temp->next;
         free(temp);
     }
-    queue->front = NULL;
-    queue->rear = NULL;
-    queue->size = 0;
+}
+
+void printPatientQueue(PatientQueue* queue) {
+    PatientQueueNode* current = queue->front;
+    while (current) {
+        const char* name = current->triage->patient ? current->triage->patient->name : "(desconhecido)";
+        printf("Paciente: %s | Prioridade: %d\n", name, current->triage->priority);
+        current = current->next;
+    }
 }

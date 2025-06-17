@@ -1,25 +1,23 @@
 #ifndef PATIENT_QUEUE_H
 #define PATIENT_QUEUE_H
 
+#include "patient.h"
 #include "triage.h"
 
-typedef struct QueueNode {
+typedef struct PatientQueueNode {
     Triage* triage;
-    struct QueueNode* next;
-} QueueNode;
+    struct PatientQueueNode* next;
+} PatientQueueNode;
 
 typedef struct {
-    QueueNode* front;
-    QueueNode* rear;
-    int size;
+    PatientQueueNode* front;
+    PatientQueueNode* rear;
 } PatientQueue;
 
-void initQueue(PatientQueue* queue);
-void enqueue(PatientQueue* queue, Triage* triage);
-Triage* dequeue(PatientQueue* queue);
-Triage* peek(PatientQueue* queue);
-void sortQueueByPriority(PatientQueue* queue);
-void printQueue(PatientQueue* queue);
-void freeQueue(PatientQueue* queue);
+void initPatientQueue(PatientQueue* queue);
+void enqueuePatient(PatientQueue* queue, Triage* triage);
+Triage* dequeueNextPatient(PatientQueue* queue);
+void freePatientQueue(PatientQueue* queue);
+void printPatientQueue(PatientQueue* queue);
 
 #endif

@@ -4,6 +4,7 @@
 #include "triage_controller.h"
 #include "triage_queue.h"
 #include "triage_queue_view.h"
+#include "patient_queue.h"
 
 void initTriageList(TriageListHeader* list) {
     list->top = NULL;
@@ -26,6 +27,7 @@ void freeTriageList(TriageListHeader* list) {
 
 Triage* addTriage(
     TriageListHeader* list,
+    PatientQueue* queue,
     long patientId,
     int bloodPressureSystolic,
     int bloodPressureDiastolic,
@@ -61,6 +63,8 @@ Triage* addTriage(
     list->end = node;
 
     saveTriagesToFile(list, "triages.dat");
+
+    enqueuePatient(queue, t);
 
     return t;
 }

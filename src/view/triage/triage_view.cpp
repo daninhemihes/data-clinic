@@ -25,7 +25,7 @@ long getPatientId(PatientListHeader* list, const char* cpf){
     }
 }
 
-void triageMenu(TriageListHeader* list, PatientListHeader* patientsList) {
+void triageMenu(TriageListHeader* list, PatientListHeader* patientsList, PatientQueue* queue) {
     int choice;
     long id, patientId;
     char patientCpf[11];
@@ -40,7 +40,6 @@ void triageMenu(TriageListHeader* list, PatientListHeader* patientsList) {
         printf("2. Listar triagens\n");
         printf("3. Atualizar triagem\n");
         printf("4. Remover triagem\n");
-        printf("5. Mostrar fila de atendimento (Protocolo de Manchester)\n");
         printf("0. Voltar\n");
         printf("Escolha: ");
         scanf("%d", &choice);
@@ -84,6 +83,7 @@ void triageMenu(TriageListHeader* list, PatientListHeader* patientsList) {
 
                 addTriage(
                     list,
+                    queue,
                     patientId,
                     systolic,
                     diastolic,
@@ -93,6 +93,7 @@ void triageMenu(TriageListHeader* list, PatientListHeader* patientsList) {
                     painScale,
                     description
                 );
+                resolveTriagePatients(list, patientsList);
                 printf("Triagem adicionada.\n");
                 break;
 
@@ -159,9 +160,6 @@ void triageMenu(TriageListHeader* list, PatientListHeader* patientsList) {
                 } else {
                     printf("Triagem não encontrada.\n");
                 }
-                break;
-            case 5:
-                
                 break;
             case 0:
                 return;
