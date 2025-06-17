@@ -60,6 +60,8 @@ Triage* addTriage(
 
     list->end = node;
 
+    saveTriagesToFile(list, "triages.dat");
+
     return t;
 }
 
@@ -82,6 +84,7 @@ int removeTriageById(TriageListHeader* list, long id) {
 
             freeTriage(current->data);
             free(current);
+            saveTriagesToFile(list, "triages.dat");
             return 1;
         }
         current = current->next;
@@ -126,6 +129,7 @@ int updateTriageById(
     if (painScale) t->painScale = *painScale;
     if (description) strncpy(t->description, description, sizeof(t->description) - 1);
     t->priority = priority;
+    saveTriagesToFile(list, "triages.dat");
 
     return 1;
 }
@@ -154,4 +158,69 @@ void listOrderedTriages(TriageListHeader* list) {
 
     // // Mostrar na janela GUI
     // showTriageQueueGUI(&queue);
+}
+
+void saveTriagesToFile(TriageListHeader* list, const char* filename) {
+    FILE* file = fopen(filename, "wb");
+    if (!file) {
+        perror("Erro ao abrir triages.dat para escrita");
+        return;
+    }
+
+    fwrite(&list->lastId, sizeof(long), 1, file);
+
+    TriageNode* current = list->top;
+    while (current != NULL) {
+        fwrite(current->data, sizeof(Triage), 1, file);
+        current = current->next;
+    }
+
+    fclose(file);
+}
+
+void loadTriagesFromFile(TriageListHeader* list, const char* filename) {
+    FILE* file = fopen(filename, "rb");
+    if (!file) return;
+
+    fread(&list->lastId, sizeof(long), 1, file);
+
+    Triage temp;
+    while (fread(&temp, sizeof(Triage), 1, file)) {
+        Triage* t = (Triage*)malloc(sizeof(Triage));
+        *t = temp;
+        t->patient = NULL;  // deve ser resolvido posteriormente, se necessário
+
+        TriageNode* node = (TriageNode*)malloc(sizeof(TriageNode));
+        node->data = t;
+        node->prev = list->end;
+        node->next = NULL;
+
+        if (list->top == NULL)
+            list->top = node;
+        else
+            list->end->next = node;
+
+        list->end = node;
+    }
+
+    fclose(file);
+}
+
+void resolveTriagePatients(TriageListHeader* triageList, PatientListHeader* patientList) {
+    TriageNode* tNode = triageList->top;
+
+    while (tNode != NULL) {
+        Triage* t = tNode->data;
+
+        Patient* pNode = patientList->top;
+        while (pNode != NULL) {
+            if (pNode->id == t->patientId) {
+                t->patient = pNode;
+                break;
+            }
+            pNode = pNode->next;
+        }
+
+        tNode = tNode->next;
+    }
 }

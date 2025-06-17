@@ -35,5 +35,8 @@ int updateTriageById(
 
 Triage* findTriageById(TriageListHeader* list, long id);
 void printAllTriages(TriageListHeader* list);
+void saveTriagesToFile(TriageListHeader* list, const char* filename);
+void loadTriagesFromFile(TriageListHeader* list, const char* filename);
+void resolveTriagePatients(TriageListHeader* triageList, PatientListHeader* patientList);
 
 #endif
