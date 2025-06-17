@@ -15,7 +15,6 @@ Triage* addTriage(
     float bodyTemperature,
     int oxygenSaturation,
     int painScale,
-    PriorityLevel priority,
     const char* description
 );
 

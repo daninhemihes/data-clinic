@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "triage_controller.h"
-#include "../model/triage_queue/triage_queue.h"
-#include "../view/triage_queue_view.cpp"
+#include "triage_queue.h"
+#include "triage_queue_view.h"
 
 void initTriageList(TriageListHeader* list) {
     list->top = NULL;
@@ -140,18 +140,18 @@ void printAllTriages(TriageListHeader* list) {
 }
 
 void listOrderedTriages(TriageListHeader* list) {
-    TriageQueue queue;
+    return;
+    // TriageQueue queue;
+    // TriageNode* current = list->top; 
 
-    TriageNode* current = list->top;  // Corrigir para list->top
+    // while (current != nullptr) {
+    //     queue.enqueue(current);
+    //     current = current->next;
+    // }
 
-    while (current != nullptr) {
-        queue.enqueue(current);
-        current = current->next;
-    }
+    // // Mostrar na linha de comando
+    // queue.print();
 
-    // Mostrar na linha de comando
-    queue.print();
-
-    // Mostrar na janela GUI
-    showTriageQueueGUI(&queue);
+    // // Mostrar na janela GUI
+    // showTriageQueueGUI(&queue);
 }

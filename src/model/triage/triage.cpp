@@ -23,7 +23,7 @@ Triage* createTriage(
     t->id = 0;
     t->patientId = patientId;
     t->patient = NULL;
-    t->priority = NON_URGENT;
+    t->priority = BLUE;
 
     strncpy(t->description, description, sizeof(t->description));
     t->description[sizeof(t->description) - 1] = '\0';

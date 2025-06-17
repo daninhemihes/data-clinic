@@ -20,6 +20,7 @@ void addPatient(PatientListHeader* list, const char* name, const char* cpf) {
         newPatient->prev = list->end;
         list->end = newPatient;
     }
+    savePatientsToFile(list, "patients.dat");
 }
 
 Patient* getPatientById(PatientListHeader* list, long id) {
@@ -65,6 +66,7 @@ int updatePatientById(PatientListHeader* list, long id, const char* newName, con
                 strncpy(current->cpf, newCpf, sizeof(current->cpf));
                 current->cpf[sizeof(current->cpf)-1] = '\0';
             }
+            savePatientsToFile(list, "patients.dat");
             return 1; // Sucesso
         }
         current = current->next;
@@ -83,6 +85,7 @@ int removePatientById(PatientListHeader* list, long id) {
             else list->end = current->prev;
 
             freePatient(current);
+            savePatientsToFile(list, "patients.dat");
             return 1; // Sucesso
         }
         current = current->next;
@@ -100,4 +103,48 @@ void freePatientList(PatientListHeader* list) {
     list->top = NULL;
     list->end = NULL;
     list->lastId = 0;
+}
+
+void savePatientsToFile(PatientListHeader* list, const char* filename) {
+    FILE* file = fopen(filename, "wb");
+    if (!file) {
+        perror("Erro ao abrir arquivo para escrita");
+        return;
+    }
+
+    fwrite(&list->lastId, sizeof(long), 1, file);
+
+    Patient* current = list->top;
+    while (current != NULL) {
+        fwrite(current, sizeof(Patient), 1, file);
+        current = current->next;
+    }
+
+    fclose(file);
+}
+
+void loadPatientsFromFile(PatientListHeader* list, const char* filename) {
+    FILE* file = fopen(filename, "rb");
+    if (!file) {
+        return;
+    }
+
+    fread(&list->lastId, sizeof(long), 1, file);
+
+    Patient temp;
+    while (fread(&temp, sizeof(Patient), 1, file)) {
+        Patient* newPatient = (Patient*)malloc(sizeof(Patient));
+        *newPatient = temp;
+        newPatient->prev = list->end;
+        newPatient->next = NULL;
+
+        if (list->top == NULL)
+            list->top = newPatient;
+        else
+            list->end->next = newPatient;
+
+        list->end = newPatient;
+    }
+
+    fclose(file);
 }

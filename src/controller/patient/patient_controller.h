@@ -12,4 +12,7 @@ int updatePatientById(PatientListHeader* list, long id, const char* newName, con
 int removePatientById(PatientListHeader* list, long id);
 void freePatientList(PatientListHeader* list);
 
+void savePatientsToFile(PatientListHeader* list, const char* filename);
+void loadPatientsFromFile(PatientListHeader* list, const char* filename);
+
 #endif

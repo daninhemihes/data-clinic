@@ -40,7 +40,7 @@ void triageMenu(TriageListHeader* list, PatientListHeader* patientsList) {
         printf("2. Listar triagens\n");
         printf("3. Atualizar triagem\n");
         printf("4. Remover triagem\n");
-        printf("5. Mostrar fila de atendimento (Protocolo de Manchester)\n");  // << NOVO MENU
+        printf("5. Mostrar fila de atendimento (Protocolo de Manchester)\n");
         printf("0. Voltar\n");
         printf("Escolha: ");
         scanf("%d", &choice);
@@ -91,7 +91,6 @@ void triageMenu(TriageListHeader* list, PatientListHeader* patientsList) {
                     temperature,
                     oxygenSaturation,
                     painScale,
-                    (PriorityLevel)0,
                     description
                 );
                 printf("Triagem adicionada.\n");
@@ -162,7 +161,7 @@ void triageMenu(TriageListHeader* list, PatientListHeader* patientsList) {
                 }
                 break;
             case 5:
-                listOrderedTriages(list);  // <<== CHAMADA DA INTERFACE GUI
+                
                 break;
             case 0:
                 return;

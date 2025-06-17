@@ -32,6 +32,7 @@ int main() {
     TriageListHeader triageList;
 
     initPatientList(&patientList);
+    loadPatientsFromFile(&patientList, "patients.dat");
     initTriageList(&triageList);
 
     int choice;
@@ -62,5 +63,6 @@ int main() {
         }
     }
 
+    savePatientsToFile(&patientList, "patients.dat");
     return 0;
 }
